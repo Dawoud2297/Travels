@@ -1,38 +1,339 @@
-.App {
-  text-align: center;
+* {
+  box-sizing: border-box;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  margin: 0px;
+  overflow-x: hidden;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.headerContainer {
+  display: flex;
+  flex-direction: row;
+  height: 250px;
+  background-color: #1034A6;
+  color: bisque;
+  margin: 0px;
+  padding: 5% 10%;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.headerContainer .acount {
+  float: right;
+  margin-left: auto;
+}
+
+.searchHotel {
+  position: absolute;
+  top: 32%;
+  left: 20%;
+  height: 10px;
+  width: px;
+}
+
+.searchForm {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffa700;
+  height: 75px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
+
+.searchSuggestions {
+  width: 300px;
+  height: 60px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 5px;
+}
+
+.searchSuggestions:focus {
+  outline: none;
+}
+
+.datePicker {
+  width: 200px;
+  height: 60px;
+  border: none;
+  border-radius: 5px;
+  margin-right: 3px;
+  cursor: pointer;
+}
+
+.options {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  height: 310px;
+  padding: 10px;
+  border: solid 5px #ffa700;
+  border-radius: 20px 0px;
+  color: wheat;
+  background-color: blue;
+}
+
+.options .counter {
+  border: 1px solid gray;
+  padding: 5px;
+  border-radius: 10px;
+  margin: 10px 20px;
+}
+
+.options button {
+  border: none;
+  margin: 10px;
+  background-color: transparent;
+  color: wheat;
+}
+
+.searchButton {
+  width: 150px;
+  height: 60px;
+  margin-right: 0px;
+  margin-left: auto;
+  float: right;
+  background-color: blue;
+}
+
+.suggestionsResults {
+  cursor: pointer;
+  width: 300px;
+}
+
+.suggestionResults {
+  margin: 100px;
+  margin-top: 400px;
+}
+
+.container-fluid {
+  margin-left: 80px;
+}
+
+.card-horizontal {
+  display: flex;
+  flex: 1 1 auto;
+}
+
+.cardImg {
+  width: 30vw;
+  height: 35vh;
+}
+
+.u-backlink {
+  text-align: center;
+  padding: 1em;
+}
+
+.u-backlink a:first-letter {
+  text-transform: capitalize;
+}
+
+.u-backlink a,
+.u-backlink p {
+  display: inline-block;
+}
+
+.u-backlink span {
+  font-size: larger;
+}
+
+.u-backlink .u-link {
+  text-decoration: underline;
+}
+
+.u-backlink span,
+.u-backlink .u-link:hover {
+  text-decoration: none;
+}
+
+
+.home {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  width: 100vw;
+  margin-top: 100px;
+  background-color: #1034A6;
+}
+
+.footer span {
+  margin-right: 10px;
+  color: #10181b;
+  font-weight: 500;
+}
+
+.footer a {
+  text-decoration: none;
+}
+
+.footer a span {
+  font-weight: 900;
+}
+
+/* Results */
+.title {
+  display: flex;
+  flex-direction: row;
+}
+
+.title .review {
+  float: right;
+  margin-left: auto;
+}
+
+.title .review h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50px;
+  width: 50px;
+  border-radius: 10px 10px 10px 0px;
   color: white;
+  background-color: blue;
 }
 
-.App-link {
-  color: #61dafb;
+.card-text {
+  display: flex;
+  flex-direction: column;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.card details {
+  cursor: pointer;
+  font-size: larger;
+}
+
+.card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+}
+@media only screen and (max-width: 768px) {
+  /* @media only screen and (min-width: 768px) { */
+
+  .App {
+    overflow-x: hidden;
+    /* position: fixed; */
+    position: relative;
+    margin: 0px;
   }
-  to {
-    transform: rotate(360deg);
+
+  .home {
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
   }
+
+  .headerContainer {
+    display: flex;
+    flex-direction: column;
+    height: 150px;
+    background-color: black;
+    /* color: bisque; */
+    margin: 0px;
+    padding: 0% 5%;
+  }
+
+  .headerContainer .acount {
+    float: right;
+    margin-left: auto;
+  }
+
+  .searchHotel {
+    position: inherit;
+  }
+
+  .searchForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #ffa700;
+    height: 80vh;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+  }
+
+  .options {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 300px;
+    height: 250px;
+    padding: 0px;
+    border: solid 5px #ffa700;
+    border-radius: 50px 0px;
+    color: wheat;
+    background-color: blue;
+  }
+
+  .searchSuggestions {
+    width: 300px;
+    height: 60px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+
+  .datePicker {
+    width: 300px;
+    height: 60px;
+    border: none;
+    border-radius: 5px;
+    margin-right: 3px;
+    cursor: pointer;
+  }
+
+  .options .counter {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid gray;
+    padding: 2px;
+    border-radius: 10px;
+    margin: 10px 20px;
+    height: 120px;
+  }
+
+  .options button {
+    border: none;
+    margin: 10px;
+    background-color: transparent;
+    color: wheat;
+  }
+
+  .searchButton {
+    position: relative;
+    bottom: -4%;
+    width: 100vw;
+    height: 60px;
+    margin: 0px;
+    background-color: black;
+    font-size: larger;
+    font-weight: bolder;
+  }
+
+  .suggestionsResults {
+    position: absolute;
+    top: 34.5%;
+    margin-left: 30px;
+    cursor: pointer;
+    width: 300px;
+  }
+
 }
