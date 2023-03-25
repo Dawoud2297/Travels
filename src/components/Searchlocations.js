@@ -6,38 +6,47 @@ import dateFormat from '../helpers/dateFormat';
 import filterAction from '../actions/filterAction';
 import selectedFromSearch from '../actions/selectedFromSearch';
 
-const Searchlocations = () => {
-  const [searchWord, setSearchWord] = useState('');
-  const [isSelected, setIsSelected] = useState(false);
-  const [dest, setDest] = useState({ dest_id: '', dest_type: '' });
-  const searchSuggestions = useSelector((state) => state.hotels_searching.hotelsResult);
-  const [dateRange, setDateRange] = useState([null, null]);
-  const [options, setOptions] = useState({ adults: 1, children: 0, rooms: 1 })
-  const [checkIn, checkOut] = dateRange;
-
-
-  dateRange[0] && dateRange[1] && console.log({
+const Searchlocations = (props) => {
+  const {
     searchWord,
-    isSelected,
-    checkIn: dateFormat(checkIn),
-    checkOut: dateFormat(checkOut),
-    options
-  })
+    setSearchWord,
+    dest,
+    setDest,
+    setDateRange,
+    options,
+    setOptions,
+    checkIn,
+    checkOut,
+    currentPage = 0,
+    setCurrentPage
+  } = props;
+
+  const [isSelected, setIsSelected] = useState(false);
+  const [isEmpty, setIsEmpty] = useState(true);
+  const searchSuggestions = useSelector((state) => state.hotels_searching.hotelsResult);
+  const [openOptions, setOpenOptions] = useState(false)
+
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (searchWord.length > 1) {
       dispatch(searchAction(searchWord))
+    };
+    if (!searchWord) {
+      setIsEmpty(true)
+      setSearchWord('');
     }
-  }, [dispatch, searchWord])
+  }, [dispatch, searchWord, setSearchWord])
 
   const selectedSuggestion = useSelector((state) => state.hotels_searching.selectedSuggestion);
   const setChanges = e => {
     if (isSelected) {
-      setIsSelected(false)
+      setIsSelected(false);
+      setIsEmpty(false)
     } else {
-      setSearchWord(e.target.value)
+      setSearchWord(e.target.value);
+      setIsEmpty(false);
     }
   }
 
@@ -63,17 +72,16 @@ const Searchlocations = () => {
     })
   }
 
-  // /////////////////////////////////////////////////////////////////////////////////////////////////////////////
-  console.log(searchSuggestions)
-  console.log(dest)
-
-
-  console.log('suggestion : ' + selectedSuggestion)
 
   const selectSuggestion = (name, label, dest_id, dest_type) => {
     dispatch(selectedFromSearch(name, label));
     setIsSelected(true);
     setDest({ ...dest, dest_id: dest_id, dest_type: dest_type })
+  }
+
+  const onOpenOptions = () => {
+    setOpenOptions(true);
+    if (openOptions) setOpenOptions(false);
   }
 
   const submitForm = e => {
@@ -85,12 +93,16 @@ const Searchlocations = () => {
       dateFormat(checkOut),
       options.adults,
       options.children,
-      options.rooms
+      options.rooms,
+      currentPage
     ))
+    if (currentPage > 1) {
+      setCurrentPage(1)
+    }
   }
 
   return (
-    <div className='searchHotel'>
+    <div className='formContainer'>
       <form onSubmit={submitForm} className='searchForm'>
         <div>
           <input
@@ -104,6 +116,7 @@ const Searchlocations = () => {
         <div className='date'>
           <DatePicker
             className='datePicker'
+            onChangeRaw={e => e.preventDefault()}
             selectsRange={true}
             startDate={checkIn}
             endDate={checkOut}
@@ -114,37 +127,46 @@ const Searchlocations = () => {
             placeholderText='checkIn - checkOut Dates'
           />
         </div>
-        <div className='options'>
-          <div className='adultsNum'>
-            <strong>Adults</strong>
-            <div className='counter'>
-              <button type='button' name="adults" onClick={(e) => increment(e)}>+</button>
-              <strong>{options.adults}</strong>
-              <button type='button' name='adults' onClick={decrement}>-</button>
-            </div>
-          </div>
-          <div className='childrenNum'>
-            <strong>Children</strong>
-            <div className='counter'>
-              <button type='button' name="children" onClick={increment}>+</button>
-              <strong>{options.children}</strong>
-              <button type='button' name='children' onClick={decrement}>-</button>
-            </div>
-          </div>
-          <div className='roomNum'>
-            <strong>Rooms</strong>
-            <div className='counter'>
-              <button type='button' name="rooms" onClick={increment}>+</button>
-              <strong>{options.rooms}</strong>
-              <button type='button' name='rooms' onClick={decrement}>-</button>
-            </div>
-          </div>
-        </div>
-        <button type="submit" className="btn btn-primary searchButton">Search</button>
-      </form>
-      <div className='suggestionsResults'>
         {
-          !isSelected && searchSuggestions?.map((d) => (
+          !openOptions ? (
+            <button type="button" className="btn optionsButton" onClick={onOpenOptions}>
+              {options.adults} Adults , {options.children} Children, {options.rooms} Rooms
+            </button>
+          ) : (
+            <div className='options'>
+              <div className='adultsNum category'>
+                <h1>Adults</h1>
+                <div className='counter'>
+                  <button type='button' name="adults" onClick={(e) => increment(e)}>+</button>
+                  <h3>{options.adults}</h3>
+                  <button type='button' name='adults' onClick={decrement}>-</button>
+                </div>
+              </div>
+              <div className='childrenNum category'>
+                <h1>Children</h1>
+                <div className='counter'>
+                  <button type='button' name="children" onClick={increment}>+</button>
+                  <h3>{options.children}</h3>
+                  <button type='button' name='children' onClick={decrement}>-</button>
+                </div>
+              </div>
+              <div className='roomNum category'>
+                <h1>Rooms</h1>
+                <div className='counter'>
+                  <button type='button' name="rooms" onClick={increment}>+</button>
+                  <h3>{options.rooms}</h3>
+                  <button type='button' name='rooms' onClick={decrement}>-</button>
+                </div>
+              </div>
+              <button type='button' className='btn-done' onClick={onOpenOptions}>Done</button>
+            </div>
+          )
+        }
+        <button type="submit" className="btn searchButton">Search</button>
+      </form>
+      <div className='suggestions'>
+        {
+          !isSelected && !isEmpty && searchSuggestions?.map((d) => (
             <div key={d.dest_id} onClick={() => selectSuggestion(d.name, d.label, d.dest_id, d.dest_type)}>
               <ul className="list-group">
                 <li className="list-group-item list-group-item-action">
